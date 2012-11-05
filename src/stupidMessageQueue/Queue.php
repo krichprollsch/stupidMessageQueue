@@ -17,6 +17,6 @@ class Queue implements QueueInterface
     }
 
     public function getName() {
-        return $this->name();
+        return $this->name;
     }
 }
