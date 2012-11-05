@@ -3,6 +3,7 @@
 namespace stupidMessageQueue;
 
 use stupidMessageQueue\Message\MessageInterface;
+use stupidMessageQueue\Exception\UnexpectedValueException as UnexpectedValueException;
 
 /**
  * User: pierre
@@ -11,11 +12,10 @@ use stupidMessageQueue\Message\MessageInterface;
 class Message implements MessageInterface
 {
     protected $id;
-    protected $queue;
     protected $content;
     protected $state;
 
-    public function __construct( $content ) {
+    public function __construct( $content=null ) {
         $this->setContent($content);
         $this->state = self::STATE_NEW;
     }
@@ -75,8 +75,7 @@ class Message implements MessageInterface
                 return;
         }
 
-        throw new \InvalidArgumentException('Bad value for state');
+        throw new UnexpectedValueException('Bad value for state');
     }
-
 
 }
