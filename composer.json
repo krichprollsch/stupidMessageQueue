@@ -1,0 +1,23 @@
+{
+    "name": "ptachoire/stupidMessageQueue",
+    "type": "library",
+    "description": "stupid message queue",
+    "keywords": ["message queue"],
+    "homepage": "https://github.com/krichprollsch/stupidMessageQueue",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pierre Tachoire",
+            "email": "pierre.tachoire@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "psr-0": { "stupidMessageQueue": "src/" }
+    }
+}
