@@ -21,15 +21,29 @@ interface StoreInterface
     public function save( Queue $queue, Message $message );
 
     /**
-     * @param string $id
+     * @param \stupidMessageQueue\Queue\QueueInterface $queue
+     * @param \stupidMessageQueue\Message\MessageInterface $message
      * @return \stupidMessageQueue\Message\MessageInterface
      */
     public function load( Queue $queue, Message $message );
 
     /**
+     * @param \stupidMessageQueue\Consumer\ConsumerInterface $consumer
      * @param \stupidMessageQueue\Queue\QueueInterface $queue
      * @return \stupidMessageQueue\Message\MessageInterface
      */
     public function consume( Consumer $consumer, Queue $queue );
+
+    /**
+     * @param \stupidMessageQueue\Queue\QueueInterface $queue
+     * @param \stupidMessageQueue\Message\MessageInterface $message
+     * @return \stupidMessageQueue\Message\MessageInterface
+     */
+    public function update( Queue $queue, Message $message );
+
+    /**
+     * @return array
+     */
+    public function getConsumableQueue();
 
 }
