@@ -1,5 +1,5 @@
 {
-    "name": "ptachoire/stupidMessageQueue",
+    "name": "cog/stupidmq",
     "type": "library",
     "description": "stupid message queue",
     "keywords": ["message queue"],
