@@ -2,7 +2,7 @@
 
 spl_autoload_register(function($className) {
     $className = ltrim($className, '\\');
-    if (0 != strpos($className, 'stupidMessageQueue\\Tests')) {
+    if (0 != strpos($className, 'CoG\\StupidMQ\\Tests')) {
         return false;
     }
     $fileName = '';

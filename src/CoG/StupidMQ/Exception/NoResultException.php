@@ -5,14 +5,14 @@
  *  05/11/12 14:41
  */
 
-namespace stupidMessageQueue\Exception;
+namespace CoG\StupidMQ\Exception;
 
 /**
  * InvalidArgumentException
  *
  * @author pierre
  */
-class UnexpectedValueException extends \UnexpectedValueException implements ExceptionInterface
+class NoResultException extends \RuntimeException implements ExceptionInterface
 {
 
 }

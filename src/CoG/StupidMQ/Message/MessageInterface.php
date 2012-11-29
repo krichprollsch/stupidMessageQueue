@@ -1,12 +1,12 @@
 <?php
 
-namespace stupidMessageQueue\Message;
+namespace CoG\StupidMQ\Message;
 
 /**
  * User: pierre
  *
  */
-interface MessageInterface
+interface MessageInterface extends \Serializable
 {
     const STATE_NEW = 'new';
     const STATE_PENDING = 'pending';

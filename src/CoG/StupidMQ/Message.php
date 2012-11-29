@@ -1,9 +1,9 @@
 <?php
 
-namespace stupidMessageQueue;
+namespace CoG\StupidMQ;
 
-use stupidMessageQueue\Message\MessageInterface;
-use stupidMessageQueue\Exception\UnexpectedValueException as UnexpectedValueException;
+use CoG\StupidMQ\Message\MessageInterface;
+use CoG\StupidMQ\Exception\UnexpectedValueException;
 
 /**
  * User: pierre
@@ -61,6 +61,8 @@ class Message implements MessageInterface
 
     /**
      * @param $state string
+     * @throws Exception\UnexpectedValueException
+     * @return void
      */
     public function setState($state)
     {
@@ -78,4 +80,11 @@ class Message implements MessageInterface
         throw new UnexpectedValueException('Bad value for state');
     }
 
+    public function serialize() {
+        return serialize($this);
+    }
+
+    public function unserialize($string) {
+        return unserialize($string);
+    }
 }

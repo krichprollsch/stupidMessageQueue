@@ -9,7 +9,7 @@
  */
 spl_autoload_register(function($className) {
     $className = ltrim($className, '\\');
-    if (0 != strpos($className, 'stupidMessageQueue')) {
+    if (0 != strpos($className, 'CoG\\StupidMQ')) {
         return false;
     }
     $fileName = '';

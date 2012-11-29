@@ -5,14 +5,14 @@
  *  05/11/12 14:41
  */
 
-namespace stupidMessageQueue\Exception;
+namespace CoG\StupidMQ\Exception;
 
 /**
  * InvalidArgumentException
  *
  * @author pierre
  */
-class NotFoundException extends NoResultException implements ExceptionInterface
+class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
 
 }
