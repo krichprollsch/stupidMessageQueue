@@ -37,7 +37,7 @@ EOF;
 
     const SQL_INSERT = 'INSERT INTO %s (queue, content, state, created_at, updated_at) VALUES (:queue, :content, :state, NOW(), NOW())';
     const SQL_CONSUME_LOAD = 'SELECT * FROM %s WHERE queue=:queue AND state=:pending ORDER BY created_at ASC LIMIT 1';
-    const SQL_CONSUME = 'UPDATE %s state=:state, updated_at=NOW() WHERE queue=:queue AND state=:pending AND id=:id';
+    const SQL_CONSUME = 'UPDATE %s SET state=:state, updated_at=NOW() WHERE queue=:queue AND state=:pending AND id=:id';
     const SQL_LOAD = 'SELECT * FROM %s WHERE id=:id AND queue=:queue';
 
     protected $tablename;
@@ -93,7 +93,7 @@ EOF;
                 ':state' => $message->getState()
             )
         );
-        if( $result == false ) {
+        if( !$result ) {
             $this->treatError( $st );
         }
         $this->hydrate($message, array('id' => $this->con->lastInsertId()));
@@ -112,7 +112,7 @@ EOF;
                 ':pending' => Message::STATE_PENDING
             )
         );
-        if( $result == false ) {
+        if( !$result ) {
             $this->con->rollBack();
             $this->treatError( $st );
         }
@@ -131,10 +131,10 @@ EOF;
                 ':id' => $message->getId(),
                 ':queue' => $queue->getName(),
                 ':state' => $message->getState(),
-                ':pending' => Message::STATE_PENDING
+                ':pending' => Message::STATE_RUNNING
             )
         );
-        if( $result == false ) {
+        if( !$result ) {
             $this->con->rollBack();
             $this->treatError( $st );
         }
@@ -162,7 +162,7 @@ EOF;
                 ':queue' => $queue->getName(),
             )
         );
-        if( $result == false ) {
+        if( !$result ) {
             $this->treatError( $st );
         }
         $attributes = $st->fetch(PDO::FETCH_ASSOC);

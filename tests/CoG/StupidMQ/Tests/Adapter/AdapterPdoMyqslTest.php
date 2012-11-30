@@ -32,12 +32,17 @@ class AdapterPdoMysqlTest extends BaseTest
     protected function getStatementMock( $opt=array() ) {
         $st = $this->getMock(
             '\PDOStatement',
-            array('execute', 'prepare')
+            array_keys(
+                array_merge(
+                    array(
+                        'execute' => null,
+                        'prepare' => null
+                    ),
+                    $opt
+                )
+            )
         );
-
-        $st->expects($this->any())
-            ->method('execute')
-            ->will($this->returnValue(true));
+        $this->affectReturnsToMock( $st, $opt, false );
 
         return $st;
     }
@@ -45,18 +50,21 @@ class AdapterPdoMysqlTest extends BaseTest
     protected function getPdoMock( $opt=array() ) {
         $pdo = $this->getMock(
             'CoG\\StupidMQ\\Tests\\Adapter\\PDOTestable',
-            array('execute', 'prepare', 'lastInsertId')
+            array_keys(
+                array_merge(
+                    array(
+                        'execute' => null,
+                        'prepare' => null,
+                        'lastInsertId' => null,
+                        'beginTransaction' => null,
+                        'commit' => null,
+                        'rollback' => null
+                    ),
+                    $opt
+                )
+            )
         );
-
-        $pdo->expects($this->any())
-            ->method('prepare')
-            ->will($this->returnValue($this->getStatementMock()));
-
-        foreach( $opt as $key => $value ) {
-            $pdo->expects($this->any())
-                ->method('get'.ucfirst($key))
-                ->will($this->returnValue($value));
-        }
+        $this->affectReturnsToMock( $pdo, $opt, false );
 
         return $pdo;
     }
@@ -68,11 +76,15 @@ class AdapterPdoMysqlTest extends BaseTest
         $queue = $this->getQueueMock(array('name' => uniqid()));
         $message = $this->getMessageMock(array(
             'content' => $content,
-            'state' => MessageInterface::STATE_NEW,
-            'serialize' => serialize($content)
+            'state' => MessageInterface::STATE_NEW
         ));
 
-        $pdo = $this->getPdoMock();
+        $st = $this->getStatementMock();
+        $st->expects($this->once())
+            ->method('execute')
+            ->will($this->returnValue(true));
+
+        $pdo = $this->getPdoMock(array('prepare' => $st));
 
         $adapter = new AdapterPdoMysql( $pdo );
         $adapter->publish( $queue, $message );
@@ -80,8 +92,47 @@ class AdapterPdoMysqlTest extends BaseTest
     }
 
 
-    public function testConsume() {
-        $this->markTestIncomplete('Consume test must be set');
+    /**
+     * @dataProvider provider
+     */
+    public function testConsume( $content ) {
+        $queue = $this->getQueueMock(array('name' => uniqid()));
+        $message_expected = $this->getMessageMock(array(
+            'content' => $content
+        ));
+
+        $st = $this->getStatementMock(array(
+            'execute' => true,
+            'fetch' => array('content' => $content),
+            'rowCount' => 1
+        ));
+
+        $pdo = $this->getPdoMock();
+        $pdo->expects($this->exactly(2))
+            ->method('prepare')
+            ->will($this->returnValue($st));
+
+        $message = $this->getMessageMock();
+        $adapter = new AdapterPdoMysql( $pdo );
+        $message = $adapter->consume( $queue, $message );
+
+        $this->assertEquals( $message_expected, $message );
+    }
+
+    /**
+     * @expectedException \CoG\StupidMQ\Exception\NoResultException
+     */
+    public function testConsumeEmpty() {
+        $queue = $this->getQueueMock(array('name' => uniqid()));
+        $st = $this->getStatementMock(array(
+            'execute' => true,
+            'rowCount' => 0
+        ));
+
+        $pdo = $this->getPdoMock(array('prepare' => $st));
+
+        $adapter = new AdapterPdoMysql( $pdo );
+        $adapter->consume( $queue, $this->getMessageMock() );
     }
 
     public function testGet() {

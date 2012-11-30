@@ -14,11 +14,12 @@ namespace CoG\StupidMQ\Tests;
  */
 abstract class BaseTest extends \PHPUnit_Framework_TestCase
 {
-    protected function getAdapterMock() {
+    protected function getAdapterMock( $opt = array() ) {
         $adapter = $this->getMock(
             'CoG\\StupidMQ\\Adapter\\AdapterInterface',
             array('publish', 'consume', 'get')
         );
+        $this->affectReturnsToMock( $adapter, $opt );
 
         return $adapter;
     }
@@ -28,12 +29,7 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
             'CoG\\StupidMQ\\Queue\\QueueInterface',
             array('getName', 'publish', 'consume', 'get')
         );
-
-        foreach( $opt as $key => $value ) {
-            $queue->expects($this->any())
-                ->method('get'.ucfirst($key))
-                ->will($this->returnValue($value));
-        }
+        $this->affectReturnsToMock( $queue, $opt );
 
         return $queue;
     }
@@ -48,24 +44,28 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
                 'serialize', 'unserialize',
             )
         );
-
-        foreach( $opt as $key => $value ) {
-            $method = $key == 'serialize' ? 'serialize' : 'get'.ucfirst($key);
-            $message->expects($this->any())
-                ->method($method)
-                ->will($this->returnValue($value));
-        }
+        $this->affectReturnsToMock( $message, $opt );
 
         return $message;
     }
 
-    protected function getChannelMock() {
+    protected function getChannelMock($opt = array() ) {
         $channel = $this->getMock(
             'CoG\\StupidMQ\\Channel\\ChannelInterface',
             array('publish', 'consume', 'get')
         );
+        $this->affectReturnsToMock( $channel, $opt );
 
         return $channel;
+    }
+
+    protected function affectReturnsToMock( $mock, $returns = array(), $getter=true ) {
+        foreach( $returns as $key => $value ) {
+            $method = $getter ? 'get'.ucfirst($key) : $key;
+            $mock->expects($this->any())
+                ->method($method)
+                ->will($this->returnValue($value));
+        }
     }
 
 

@@ -46,7 +46,7 @@ class Queue implements QueueInterface
     }
 
     /**
-     * @param $id message id
+     * @param string $id
      * @return MessageInterface
      * @throw NotFoundException
      */
