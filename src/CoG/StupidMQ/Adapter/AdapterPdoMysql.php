@@ -131,13 +131,18 @@ EOF;
                 ':id' => $message->getId(),
                 ':queue' => $queue->getName(),
                 ':state' => $message->getState(),
-                ':pending' => Message::STATE_RUNNING
+                ':pending' => Message::STATE_PENDING
             )
         );
         if( !$result ) {
             $this->con->rollBack();
             $this->treatError( $st );
         }
+        if( $st->rowCount() != 1 ) {
+            $this->con->rollBack();
+            throw new RuntimeException( sprintf('The message has been used by another consumer') );
+        }
+
         $st->closeCursor();
         $this->con->commit();
 
