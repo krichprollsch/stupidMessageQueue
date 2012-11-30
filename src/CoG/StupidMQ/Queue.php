@@ -44,4 +44,13 @@ class Queue implements QueueInterface
     public function consume() {
         return $this->channel->consume($this);
     }
+
+    /**
+     * @param $id message id
+     * @return MessageInterface
+     * @throw NotFoundException
+     */
+    public function get($id) {
+        return $this->channel->get($this, $id);
+    }
 }

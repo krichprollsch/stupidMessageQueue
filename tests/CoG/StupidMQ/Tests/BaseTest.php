@@ -17,7 +17,7 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
     protected function getAdapterMock() {
         $adapter = $this->getMock(
             'CoG\\StupidMQ\\Adapter\\AdapterInterface',
-            array('publish', 'consume')
+            array('publish', 'consume', 'get')
         );
 
         return $adapter;
@@ -26,7 +26,7 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
     protected function getQueueMock( $opt = array() ) {
         $queue = $this->getMock(
             'CoG\\StupidMQ\\Queue\\QueueInterface',
-            array('getName', 'publish', 'consume')
+            array('getName', 'publish', 'consume', 'get')
         );
 
         foreach( $opt as $key => $value ) {
@@ -62,7 +62,7 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
     protected function getChannelMock() {
         $channel = $this->getMock(
             'CoG\\StupidMQ\\Channel\\ChannelInterface',
-            array('publish', 'consume')
+            array('publish', 'consume', 'get')
         );
 
         return $channel;

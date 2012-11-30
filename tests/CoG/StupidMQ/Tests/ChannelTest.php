@@ -67,4 +67,24 @@ class ChannelTest extends BaseTest
         $this->assertEquals( $message_expected, $message );
     }
 
+    /**
+     * @dataProvider contentProvider
+     */
+    public function testGet( $content ) {
+        $id = uniqid();
+        $message_expected = $this->getMessageMock(array('content' => $content, 'id' => $id));
+
+        $adapter = $this->getAdapterMock();
+        $adapter->expects($this->once())
+            ->method('get')
+            ->will($this->returnValue($message_expected));
+
+        $queue = $this->getQueueMock();
+
+        $channel = new Channel( $adapter );
+        $message = $channel->get($queue, $id);
+
+        $this->assertEquals( $message_expected, $message );
+    }
+
 }

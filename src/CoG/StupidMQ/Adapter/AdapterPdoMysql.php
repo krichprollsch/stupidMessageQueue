@@ -38,6 +38,7 @@ EOF;
     const SQL_INSERT = 'INSERT INTO %s (queue, content, state, created_at, updated_at) VALUES (:queue, :content, :state, NOW(), NOW())';
     const SQL_CONSUME_LOAD = 'SELECT * FROM %s WHERE queue=:queue AND state=:pending ORDER BY created_at ASC LIMIT 1';
     const SQL_CONSUME = 'UPDATE %s state=:state, updated_at=NOW() WHERE queue=:queue AND state=:pending AND id=:id';
+    const SQL_LOAD = 'SELECT * FROM %s WHERE id=:id AND queue=:queue';
 
     protected $tablename;
 
@@ -151,5 +152,25 @@ EOF;
             }
         }
         return $obj;
+    }
+
+    public function get(QueueInterface $queue, MessageInterface $message) {
+        $st = $this->getStatement( self::SQL_LOAD );
+        $result = $st->execute(
+            array(
+                ':id' => $message->getId(),
+                ':queue' => $queue->getName(),
+            )
+        );
+        if( $result == false ) {
+            $this->treatError( $st );
+        }
+        $attributes = $st->fetch(PDO::FETCH_ASSOC);
+        $st->closeCursor();
+
+        if( $st->rowCount() <= 0 ) {
+            throw new NotFoundException(sprintf('No message found for %d id', $message->getId()));
+        }
+        return $this->hydrate( $message, $attributes);
     }
 }

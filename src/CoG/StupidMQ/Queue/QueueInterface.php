@@ -8,6 +8,8 @@
 namespace CoG\StupidMQ\Queue;
 
 use CoG\StupidMQ\Message\MessageInterface;
+use CoG\StupidMQ\Exception\NoResultException;
+use CoG\StupidMQ\Exception\NotFoundException;
 
 /**
  * QueueInterface
@@ -24,6 +26,7 @@ interface QueueInterface
 
     /**
      * @return MessageInterface
+     * @throw NoResultException
      */
     public function consume();
 
@@ -31,4 +34,11 @@ interface QueueInterface
      * @return string
      */
     public function getName();
+
+    /**
+     * @param $id message id
+     * @return MessageInterface
+     * @throw NotFoundException
+     */
+    public function get($id);
 }

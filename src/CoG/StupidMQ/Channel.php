@@ -11,8 +11,9 @@ use CoG\StupidMQ\Channel\ChannelInterface;
 use CoG\StupidMQ\Adapter\AdapterInterface;
 use CoG\StupidMQ\Queue\QueueInterface;
 use CoG\StupidMQ\Message\MessageInterface;
-use CoG\StupidMQ\Queue;
 use CoG\StupidMQ\Message;
+use CoG\StupidMQ\Exception\NoResultException;
+use CoG\StupidMQ\Exception\NotFoundException;
 
 /**
  * Channel
@@ -46,5 +47,17 @@ class Channel implements ChannelInterface
      */
     public function consume( QueueInterface $queue ) {
         return $this->adapter->consume( $queue, new Message());
+    }
+
+    /**
+     * @param QueueInterface $queue
+     * @param $id message id
+     * @return MessageInterface
+     * @throw NotFoundException
+     */
+    public function get(QueueInterface $queue, $id) {
+        $message = new Message();
+        $message->setId($id);
+        return $this->adapter->get( $queue, $message);
     }
 }

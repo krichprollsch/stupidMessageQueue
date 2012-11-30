@@ -63,11 +63,12 @@ class AdapterFileTest extends BaseTest
         $this->assertStringEqualsFile( $adapter->getFilename($queue), $adapter->serialize($message));
     }
 
-    /**
-     * @dataProvider provider
-     */
-    public function testConsume( $content ) {
+    public function testConsume() {
         $this->markTestIncomplete('Consume test must be set');
+    }
+
+    public function testGet() {
+        $this->markTestIncomplete('Get test must be set');
     }
 }
 

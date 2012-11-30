@@ -9,6 +9,8 @@ namespace CoG\StupidMQ\Channel;
 
 use CoG\StupidMQ\Queue\QueueInterface;
 use CoG\StupidMQ\Message\MessageInterface;
+use CoG\StupidMQ\Exception\NoResultException;
+use CoG\StupidMQ\Exception\NotFoundException;
 
 /**
  * ChannelInterface
@@ -28,7 +30,16 @@ interface ChannelInterface
     /**
      * @param QueueInterface $queue
      * @return MessageInterface
+     * @throw NoResultException
      */
     public function consume( QueueInterface $queue );
+
+    /**
+     * @param QueueInterface $queue
+     * @param $id message id
+     * @return MessageInterface
+     * @throw NotFoundException
+     */
+    public function get(QueueInterface $queue, $id);
 
 }
