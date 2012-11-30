@@ -23,3 +23,8 @@ Consuming messages :
 
   $message = $queue->consume();
 
+Todo
+----
+
+- configure database indexes
+- FileAdapter
