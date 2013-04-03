@@ -55,5 +55,5 @@ interface QueueInterface
      * @param int $state
      * @return array
      */
-    public function findAll($state = null);
+    public function findAll(array $ids);
 }

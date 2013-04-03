@@ -66,7 +66,7 @@ class AdapterFile implements AdapterInterface
         //TODO
     }
 
-    public function findAll(QueueInterface $queue, MessageInterface $message, $state = null) {
+    public function findAll(QueueInterface $queue, MessageInterface $message, array $ids) {
         //TODO
     }
 

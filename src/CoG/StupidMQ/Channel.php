@@ -79,9 +79,9 @@ class Channel implements ChannelInterface
     /**
      * @inheritdoc
      */
-    public function findAll(QueueInterface $queue, $state = null)
+    public function findAll(QueueInterface $queue, array $ids)
     {
         $message = new Message();
-        return $this->adapter->findAll($queue, $message, $state);
+        return $this->adapter->findAll($queue, $message, $ids);
     }
 }

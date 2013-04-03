@@ -69,8 +69,8 @@ class Queue implements QueueInterface
      * @param int $state
      * @return array
      */
-    public function findAll($state = null)
+    public function findAll(array $ids)
     {
-        return $this->channel->findAll($this, $state);
+        return $this->channel->findAll($this, $ids);
     }
 }

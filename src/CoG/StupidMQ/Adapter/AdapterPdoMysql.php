@@ -41,8 +41,7 @@ EOF;
     const SQL_CONSUME = 'UPDATE %s SET state=:state, updated_at=NOW() WHERE queue=:queue AND state=:pending AND id=:id';
     const SQL_LOAD = 'SELECT * FROM %s WHERE id=:id AND queue=:queue';
     const SQL_FEEDBACK = 'UPDATE %s SET state=:state, feedback=:feedback, updated_at=NOW() WHERE id=:id';
-    const SQL_FIND_BY_STATE = 'SELECT * FROM %s WHERE state=:state AND queue=:queue';
-    const SQL_FIND_ALL = 'SELECT * FROM %s WHERE queue=:queue';
+    const SQL_FIND = 'SELECT * FROM %s WHERE id IN (%s) AND queue=:queue';
 
     protected $tablename;
 
@@ -62,13 +61,14 @@ EOF;
 
     /**
      * @param $sql
-     * @return \PDOStatement
+     * @param mixed $extra
+     * @return mixed
      */
-    protected function getStatement($sql)
+    protected function getStatement($sql, $extra = null)
     {
         if (!isset($this->statements[$sql])) {
             $st = $this->con->prepare(
-                sprintf($sql, $this->getTable())
+                sprintf($sql, $this->getTable(), $extra)
             );
             $this->statements[$sql] = $st;
         }
@@ -207,21 +207,17 @@ EOF;
         return $message;
     }
 
-    public function findAll(QueueInterface $queue, MessageInterface $message, $state = null)
+    public function findAll(QueueInterface $queue, MessageInterface $message, array $ids)
     {
-        if (is_null($state)) {
-            $sql = self::SQL_FIND_ALL;
-            $params = array(':queue' => $queue->getName(),);
-        } else {
-            $sql = self::SQL_FIND_BY_STATE;
-            $params = array(
-                ':state' => $state,
+        $st = $this->getStatement(
+            self::SQL_FIND,
+            implode(',', $this->quote($ids))
+        );
+        $result = $st->execute(
+            array(
                 ':queue' => $queue->getName()
-            );
-        }
-
-        $st = $this->getStatement($sql);
-        $result = $st->execute($params);
+            )
+        );
         if (!$result) {
             $this->treatError($st);
         }
@@ -234,5 +230,13 @@ EOF;
         $st->closeCursor();
 
         return $messages;
+    }
+
+    public function quote(array $params)
+    {
+        foreach ($params as &$val) {
+            $val=$this->con->quote($val);
+        }
+        return $params;
     }
 }

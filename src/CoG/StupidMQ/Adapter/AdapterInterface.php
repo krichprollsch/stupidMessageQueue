@@ -51,6 +51,6 @@ interface AdapterInterface
      * @param null $state
      * @return array
      */
-    public function findAll(QueueInterface $queue, MessageInterface $message, $state = null);
+    public function findAll(QueueInterface $queue, MessageInterface $message, array $ids);
 
 }

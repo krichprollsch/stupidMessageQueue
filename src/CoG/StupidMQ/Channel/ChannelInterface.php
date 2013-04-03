@@ -57,6 +57,6 @@ interface ChannelInterface
      * @param null $state
      * @return array
      */
-    public function findAll(QueueInterface $queue, $state = null);
+    public function findAll(QueueInterface $queue, array $ids);
 
 }
