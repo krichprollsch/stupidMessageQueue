@@ -19,7 +19,7 @@ interface AdapterInterface
      * @param MessageInterface $message
      * @return MessageInterface
      */
-    public function publish( QueueInterface $queue, MessageInterface $message );
+    public function publish(QueueInterface $queue, MessageInterface $message);
 
     /**
      * @param QueueInterface $queue
@@ -27,7 +27,7 @@ interface AdapterInterface
      * @return MessageInterface
      * @throw NoResultException
      */
-    public function consume( QueueInterface $queue, MessageInterface $message );
+    public function consume(QueueInterface $queue, MessageInterface $message);
 
     /**
      * @param QueueInterface $queue
@@ -36,5 +36,21 @@ interface AdapterInterface
      * @throw NotFoundException
      */
     public function get(QueueInterface $queue, MessageInterface $message);
+
+    /**
+     * @param QueueInterface $queue
+     * @param MessageInterface $message
+     * @return MessageInterface
+     * @throw NotFoundException
+     */
+    public function feedback(QueueInterface $queue, MessageInterface $message);
+
+    /**
+     * @param QueueInterface $queue
+     * @param MessageInterface $message
+     * @param null $state
+     * @return array
+     */
+    public function findAll(QueueInterface $queue, MessageInterface $message, $state = null);
 
 }

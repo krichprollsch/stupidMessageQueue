@@ -31,33 +31,57 @@ class Channel implements ChannelInterface
     /**
      * @param Adapter\AdapterInterface $adapter
      */
-    public function __construct( AdapterInterface $adapter ) {
+    public function __construct(AdapterInterface $adapter)
+    {
         $this->adapter = $adapter;
     }
 
-    public function publish( QueueInterface $queue, $content ) {
-        $message = new Message( $content );
-        $this->adapter->publish( $queue, $message );
+    /**
+     * @inheritdoc
+     */
+    public function publish(QueueInterface $queue, $content)
+    {
+        $message = new Message($content);
+        $this->adapter->publish($queue, $message);
         return $message;
     }
 
     /**
-     * @param QueueInterface $queue
-     * @return MessageInterface
+     * @inheritdoc
      */
-    public function consume( QueueInterface $queue ) {
-        return $this->adapter->consume( $queue, new Message());
+    public function consume(QueueInterface $queue)
+    {
+        return $this->adapter->consume($queue, new Message());
     }
 
     /**
-     * @param QueueInterface $queue
-     * @param $id message id
-     * @return MessageInterface
-     * @throw NotFoundException
+     * @inheritdoc
      */
-    public function get(QueueInterface $queue, $id) {
+    public function get(QueueInterface $queue, $id)
+    {
         $message = new Message();
         $message->setId($id);
-        return $this->adapter->get( $queue, $message);
+        return $this->adapter->get($queue, $message);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function feedback(QueueInterface $queue, $id, $state, $feedback)
+    {
+        $message = new Message();
+        $message->setId($id);
+        $message->setState($state);
+        $message->setFeedback($feedback);
+        return $this->adapter->feedback($queue, $message);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function findAll(QueueInterface $queue, $state = null)
+    {
+        $message = new Message();
+        return $this->adapter->findAll($queue, $message, $state);
     }
 }

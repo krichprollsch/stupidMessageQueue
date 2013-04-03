@@ -21,7 +21,8 @@ class Queue implements QueueInterface
 
     protected $name;
 
-    public function __construct( ChannelInterface $channel, $name ) {
+    public function __construct(ChannelInterface $channel, $name)
+    {
         $this->channel = $channel;
         $this->name = $name;
     }
@@ -30,27 +31,46 @@ class Queue implements QueueInterface
      * @param string $content
      * @return Message\MessageInterface
      */
-    public function publish( $content ) {
-        return $this->channel->publish( $this, $content );
+    public function publish($content)
+    {
+        return $this->channel->publish($this, $content);
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     /**
      * @return MessageInterface
      */
-    public function consume() {
+    public function consume()
+    {
         return $this->channel->consume($this);
     }
 
     /**
-     * @param string $id
-     * @return MessageInterface
-     * @throw NotFoundException
+     * @inheritdoc
      */
-    public function get($id) {
+    public function get($id)
+    {
         return $this->channel->get($this, $id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function feedback($id, $state, $feedback)
+    {
+        return $this->channel->feedback($this, $id, $state, $feedback);
+    }
+
+    /**
+     * @param int $state
+     * @return array
+     */
+    public function findAll($state = null)
+    {
+        return $this->channel->findAll($this, $state);
     }
 }

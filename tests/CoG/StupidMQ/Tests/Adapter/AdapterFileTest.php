@@ -70,6 +70,10 @@ class AdapterFileTest extends BaseTest
     public function testGet() {
         $this->markTestIncomplete('Get test must be set');
     }
+
+    public function testFeedback() {
+        $this->markTestIncomplete('Feedback test must be set');
+    }
 }
 
 class AdapterTestable extends AdapterFile {

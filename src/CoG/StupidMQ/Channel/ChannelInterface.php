@@ -25,14 +25,14 @@ interface ChannelInterface
      * @param string $content
      * @return MessageInterface
      */
-    public function publish( QueueInterface $queue, $content );
+    public function publish(QueueInterface $queue, $content);
 
     /**
      * @param QueueInterface $queue
      * @return MessageInterface
      * @throw NoResultException
      */
-    public function consume( QueueInterface $queue );
+    public function consume(QueueInterface $queue);
 
     /**
      * @param QueueInterface $queue
@@ -41,5 +41,22 @@ interface ChannelInterface
      * @throw NotFoundException
      */
     public function get(QueueInterface $queue, $id);
+
+    /**
+     * @param QueueInterface $queue
+     * @param int $id
+     * @param string $state
+     * @param string $feedback
+     * @return MessageInterface
+     * @throw NotFoundException
+     */
+    public function feedback(QueueInterface $queue, $id, $state, $feedback);
+
+    /**
+     * @param QueueInterface $queue
+     * @param null $state
+     * @return array
+     */
+    public function findAll(QueueInterface $queue, $state = null);
 
 }

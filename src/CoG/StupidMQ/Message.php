@@ -14,6 +14,7 @@ class Message implements MessageInterface
     protected $id;
     protected $content;
     protected $state;
+    protected $feedback;
 
     public function __construct( $content=null ) {
         $this->setContent($content);
@@ -86,5 +87,18 @@ class Message implements MessageInterface
 
     public function unserialize($string) {
         return unserialize($string);
+    }
+
+    public function setFeedback( $feedback ) {
+        $this->feedback = $feedback;
+    }
+
+    /**
+     * message content
+     * @return string
+     */
+    public function getFeedback()
+    {
+        return $this->feedback;
     }
 }

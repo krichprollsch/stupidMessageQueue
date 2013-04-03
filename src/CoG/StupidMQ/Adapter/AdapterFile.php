@@ -62,6 +62,14 @@ class AdapterFile implements AdapterInterface
         //TODO
     }
 
+    public function feedback(QueueInterface $queue, MessageInterface $message) {
+        //TODO
+    }
+
+    public function findAll(QueueInterface $queue, MessageInterface $message, $state = null) {
+        //TODO
+    }
+
     protected function serialize( MessageInterface $message ) {
         return base64_encode(serialize($message));
     }

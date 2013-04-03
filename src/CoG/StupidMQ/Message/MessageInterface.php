@@ -48,5 +48,15 @@ interface MessageInterface extends \Serializable
      */
     public function setState($state);
 
+    /**
+     * message current feedback
+     * @return string
+     */
+    public function getFeedback();
+
+    /**
+     * @param $feedback string
+     */
+    public function setFeedback($feedback);
 
 }

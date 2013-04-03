@@ -87,6 +87,24 @@ class QueueTest extends BaseTest
         $this->assertEquals( $content, $message->getContent() );
     }
 
+    /**
+     * @dataProvider contentProvider
+     */
+    public function testFeedback( $content ) {
+        $id = uniqid();
+        $message_expected = $this->getMessageMock(array('content' => $content, 'id' => $id));
 
+        $channel = $this->getChannelMock();
+        $channel->expects($this->once())
+            ->method('feedback')
+            ->will($this->returnValue($message_expected));
+
+        $queue = $this->getQueueMock();
+
+        $queue = new Queue( $channel, 'this is a test' );
+        $message = $queue->feedback($id, 'done', null);
+
+        $this->assertEquals( $content, $message->getContent() );
+    }
 
 }

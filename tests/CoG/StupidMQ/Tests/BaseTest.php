@@ -17,7 +17,7 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
     protected function getAdapterMock( $opt = array() ) {
         $adapter = $this->getMock(
             'CoG\\StupidMQ\\Adapter\\AdapterInterface',
-            array('publish', 'consume', 'get')
+            array('publish', 'consume', 'get', 'feedback', 'findAll')
         );
         $this->affectReturnsToMock( $adapter, $opt );
 
@@ -27,7 +27,7 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
     protected function getQueueMock( $opt = array() ) {
         $queue = $this->getMock(
             'CoG\\StupidMQ\\Queue\\QueueInterface',
-            array('getName', 'publish', 'consume', 'get')
+            array('getName', 'publish', 'consume', 'get', 'feedback', 'findAll')
         );
         $this->affectReturnsToMock( $queue, $opt );
 
@@ -41,6 +41,7 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
                 'getId', 'setId',
                 'getContent', 'setContent',
                 'getState', 'setState',
+                'getFeedback', 'setFeedback',
                 'serialize', 'unserialize',
             )
         );
@@ -52,7 +53,7 @@ abstract class BaseTest extends \PHPUnit_Framework_TestCase
     protected function getChannelMock($opt = array() ) {
         $channel = $this->getMock(
             'CoG\\StupidMQ\\Channel\\ChannelInterface',
-            array('publish', 'consume', 'get')
+            array('publish', 'consume', 'get', 'feedback', 'findAll')
         );
         $this->affectReturnsToMock( $channel, $opt );
 

@@ -22,7 +22,7 @@ interface QueueInterface
      * @param string $content
      * @return MessageInterface
      */
-    public function publish( $content );
+    public function publish($content);
 
     /**
      * @return MessageInterface
@@ -41,4 +41,19 @@ interface QueueInterface
      * @throw NotFoundException
      */
     public function get($id);
+
+    /**
+     * @param $id
+     * @param $state string
+     * @param $feedback string
+     * @return MessageInterface
+     * @throw NotFoundException
+     */
+    public function feedback($id, $state, $feedback);
+
+    /**
+     * @param int $state
+     * @return array
+     */
+    public function findAll($state = null);
 }
