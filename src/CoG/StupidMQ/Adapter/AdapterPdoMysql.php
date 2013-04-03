@@ -209,6 +209,10 @@ EOF;
 
     public function findAll(QueueInterface $queue, MessageInterface $message, array $ids)
     {
+        if (count($ids) <= 0) {
+            throw new \InvalidArgumentException('Ids is empty');
+        }
+
         $st = $this->getStatement(
             self::SQL_FIND,
             implode(',', $this->quote($ids))
