@@ -2,14 +2,10 @@
 
 namespace CoG\StupidMQ\Adapter;
 
-use CoG\StupidMQ\Adapter\AdapterInterface;
 use CoG\StupidMQ\Queue\QueueInterface;
 use CoG\StupidMQ\Message\MessageInterface;
-use CoG\StupidMQ\Exception\NoResultException;
 use CoG\StupidMQ\Exception\RuntimeException;
 use CoG\StupidMQ\Exception\InvalidArgumentException;
-
-use PDO as PDO;
 
 /**
  * User: pierre

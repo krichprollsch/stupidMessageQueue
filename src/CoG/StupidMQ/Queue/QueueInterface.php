@@ -8,8 +8,6 @@
 namespace CoG\StupidMQ\Queue;
 
 use CoG\StupidMQ\Message\MessageInterface;
-use CoG\StupidMQ\Exception\NoResultException;
-use CoG\StupidMQ\Exception\NotFoundException;
 
 /**
  * QueueInterface

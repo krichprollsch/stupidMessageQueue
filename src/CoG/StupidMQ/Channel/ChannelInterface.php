@@ -9,8 +9,6 @@ namespace CoG\StupidMQ\Channel;
 
 use CoG\StupidMQ\Queue\QueueInterface;
 use CoG\StupidMQ\Message\MessageInterface;
-use CoG\StupidMQ\Exception\NoResultException;
-use CoG\StupidMQ\Exception\NotFoundException;
 
 /**
  * ChannelInterface

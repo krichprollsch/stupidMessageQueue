@@ -4,8 +4,6 @@ namespace CoG\StupidMQ\Adapter;
 
 use CoG\StupidMQ\Queue\QueueInterface;
 use CoG\StupidMQ\Message\MessageInterface;
-use CoG\StupidMQ\Exception\NoResultException;
-use CoG\StupidMQ\Exception\NotFoundException;
 
 /**
  * User: pierre
