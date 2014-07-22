@@ -59,4 +59,26 @@ interface MessageInterface extends \Serializable
      */
     public function setFeedback($feedback);
 
+    /**
+     * message created at date
+     * @return date
+     */
+    public function getCreated_at();
+
+    /**
+     * message updated at date
+     * @return date
+     */
+    public function getUpdated_at();
+
+    /**
+     * @param $created_at date
+     */
+    public function setCreated_at($created_at);
+
+    /**
+     * @param $updatedAt date
+     */
+    public function setUpdated_at($updated_at);
+
 }
