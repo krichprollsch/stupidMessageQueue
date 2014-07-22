@@ -4,6 +4,8 @@ namespace CoG\StupidMQ\Adapter;
 
 use CoG\StupidMQ\Queue\QueueInterface;
 use CoG\StupidMQ\Message\MessageInterface;
+use CoG\StupidMQ\Exception\NoResultException;
+use CoG\StupidMQ\Exception\NotFoundException;
 
 /**
  * User: pierre
@@ -46,9 +48,16 @@ interface AdapterInterface
     /**
      * @param QueueInterface $queue
      * @param MessageInterface $message
-     * @param null $state
+     * @param array $ids
      * @return array
      */
     public function findAll(QueueInterface $queue, MessageInterface $message, array $ids);
 
+    /**
+     * @param QueueInterface $queue
+     * @param MessageInterface $message
+     * @param int $first first entry.
+     * @param int $limit limit number of entries.
+     */
+    public function findByInterval(QueueInterface $queue, MessageInterface $message, $first, $limit);
 }

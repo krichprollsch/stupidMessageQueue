@@ -73,4 +73,13 @@ class Queue implements QueueInterface
     {
         return $this->channel->findAll($this, $ids);
     }
+
+    /**
+     * @param int $first first entry.
+     * @param int $limit limit number of entries.
+     */
+    public function findByInterval($first, $limit)
+    {
+        return $this->channel->findByInterval($this, $first, $limit);
+    }
 }

@@ -43,6 +43,7 @@ EOF;
     const SQL_LOAD = 'SELECT * FROM %s WHERE id=:id AND queue=:queue';
     const SQL_FEEDBACK = 'UPDATE %s SET state=:state, feedback=:feedback, updated_at=NOW() WHERE id=:id';
     const SQL_FIND = 'SELECT * FROM %s WHERE id IN (%s) AND queue=:queue';
+    const SQL_FIND_BY_INTERVAL = 'SELECT * FROM %s WHERE queue=:queue ORDER BY updated_at DESC LIMIT %s OFFSET %s';
 
     protected $tablename;
 
@@ -62,15 +63,15 @@ EOF;
 
     /**
      * @param $sql
-     * @param mixed $extra
+     * @param array $extra
      * @return mixed
      */
     protected function getStatement($sql, $extra = null)
     {
         if (!isset($this->statements[$sql])) {
-            $st = $this->con->prepare(
-                sprintf($sql, $this->getTable(), $extra)
-            );
+            $params = array_merge(array($sql, $this->getTable()), (array) $extra);
+            $st = $this->con->prepare(call_user_func_array('sprintf', $params));
+
             $this->statements[$sql] = $st;
         }
 
@@ -216,7 +217,7 @@ EOF;
 
         $st = $this->getStatement(
             self::SQL_FIND,
-            implode(',', $this->quote($ids))
+            array(implode(',', $this->quote($ids)))
         );
         $result = $st->execute(
             array(
@@ -243,5 +244,39 @@ EOF;
             $val=$this->con->quote($val);
         }
         return $params;
+    }
+
+    /**
+     * @param QueueInterface $queue
+     * @param MessageInterface $message
+     * @param int $first first entry.
+     * @param int $limit limit number of entries.
+     */
+    public function findByInterval(QueueInterface $queue, MessageInterface $message, $first, $limit)
+    {
+        if (!is_numeric($first) || !is_numeric($limit) || $first < 0 || $limit < 1) {
+            throw new \InvalidArgumentException('First and limit must be numeric and greater than 0 and 1.');
+        }
+
+        $st = $this->getStatement(self::SQL_FIND_BY_INTERVAL, array($limit, $first));
+
+        $result = $st->execute(
+            array(
+                ':queue' => $queue->getName(),
+            )
+        );
+
+        if (!$result) {
+            $this->treatError($st);
+        }
+
+        $messages = array();
+        while ($attributes = $st->fetch(PDO::FETCH_ASSOC)) {
+            $messages[] = $this->hydrate(clone $message, $attributes);
+        }
+
+        $st->closeCursor();
+
+        return $messages;
     }
 }
