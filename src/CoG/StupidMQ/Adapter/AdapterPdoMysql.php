@@ -63,7 +63,7 @@ EOF;
 
     /**
      * @param $sql
-     * @param array $extra
+     * @param mixed $extra
      * @return mixed
      */
     protected function getStatement($sql, $extra = null)
@@ -217,7 +217,7 @@ EOF;
 
         $st = $this->getStatement(
             self::SQL_FIND,
-            array(implode(',', $this->quote($ids)))
+            implode(',', $this->quote($ids))
         );
         $result = $st->execute(
             array(
