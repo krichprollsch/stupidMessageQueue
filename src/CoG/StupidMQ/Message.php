@@ -15,6 +15,8 @@ class Message implements MessageInterface
     protected $content;
     protected $state;
     protected $feedback;
+    protected $created_at;
+    protected $updated_at;
 
     public function __construct( $content=null ) {
         $this->setContent($content);
@@ -50,6 +52,40 @@ class Message implements MessageInterface
     public function getState()
     {
         return $this->state;
+    }
+
+    /**
+     * message created at date
+     * @return date
+     */
+    public function getCreated_at()
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * message updated at date
+     * @return date
+     */
+    public function getUpdated_at()
+    {
+        return $this->updated_at;
+    }
+
+    /**
+     * @param $created_at date
+     */
+    public function setCreated_at($created_at)
+    {
+        $this->created_at = $created_at;
+    }
+
+    /**
+     * @param $updatedAt date
+     */
+    public function setUpdated_at($updated_at)
+    {
+        $this->updated_at = $updated_at;
     }
 
     /**

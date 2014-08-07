@@ -9,6 +9,8 @@ namespace CoG\StupidMQ\Channel;
 
 use CoG\StupidMQ\Queue\QueueInterface;
 use CoG\StupidMQ\Message\MessageInterface;
+use CoG\StupidMQ\Exception\NoResultException;
+use CoG\StupidMQ\Exception\NotFoundException;
 
 /**
  * ChannelInterface
@@ -56,5 +58,12 @@ interface ChannelInterface
      * @return array
      */
     public function findAll(QueueInterface $queue, array $ids);
+
+    /**
+     * @param QueueInterface $queue
+     * @param int $first first entry.
+     * @param int $limit limit number of entries.
+     */
+    public function findByInterval(QueueInterface $queue, $first, $limit);
 
 }

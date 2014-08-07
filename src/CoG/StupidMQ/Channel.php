@@ -10,7 +10,10 @@ namespace CoG\StupidMQ;
 use CoG\StupidMQ\Channel\ChannelInterface;
 use CoG\StupidMQ\Adapter\AdapterInterface;
 use CoG\StupidMQ\Queue\QueueInterface;
+use CoG\StupidMQ\Message\MessageInterface;
 use CoG\StupidMQ\Message;
+use CoG\StupidMQ\Exception\NoResultException;
+use CoG\StupidMQ\Exception\NotFoundException;
 
 /**
  * Channel
@@ -80,5 +83,14 @@ class Channel implements ChannelInterface
     {
         $message = new Message();
         return $this->adapter->findAll($queue, $message, $ids);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function findByInterval(QueueInterface $queue, $first, $limit)
+    {
+        $message = new Message();
+        return $this->adapter->findByInterval($queue, $message, $first, $limit);
     }
 }

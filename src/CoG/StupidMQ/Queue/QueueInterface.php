@@ -50,8 +50,14 @@ interface QueueInterface
     public function feedback($id, $state, $feedback);
 
     /**
-     * @param int $state
+     * @param int $ids
      * @return array
      */
     public function findAll(array $ids);
+
+    /**
+     * @param int $first first entry.
+     * @param int $limit limit number of entries.
+     */
+    public function findByInterval($first, $limit);
 }
